@@ -3,7 +3,7 @@ import json
 import os
 from discord.ext import commands
 
-TOKEN = "MTM0NzMxODMyMjAxNzk5Njg4MQ.GqVi6d.4pT3uE-YCkHuxibWb8UYDePTfj1qJ38s1dIOLU"
+TOKEN = "MTM0NzMxODMyMjAxNzk5Njg4MQ.GN6cKy._ywKARtGYHixuYfRUnFn79jvp_qc7pN6TQO-AY"
 GUILD_ID = 1326517206674182235  # Remplace par l'ID de ton serveur
 CATEGORY_ID = 1326661110815789130  # Remplace par l'ID de la catégorie où créer les salons
 ADMIN_ROLE_ID = 1326518471923863656  # Remplace par l'ID du rôle admin qui doit voir les salons
