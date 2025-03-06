@@ -2,15 +2,11 @@ import discord
 import json
 import os
 from discord.ext import commands
-from dotenv import load_dotenv
 
-# 📌 Charger les variables d'environnement depuis .env
-load_dotenv()
-
-TOKEN = os.getenv("TOKEN")
-GUILD_ID = int(os.getenv("GUILD_ID"))
-CATEGORY_ID = int(os.getenv("CATEGORY_ID"))
-ADMIN_ROLE_ID = int(os.getenv("ADMIN_ROLE_ID"))
+TOKEN = "MTM0NzMxODMyMjAxNzk5Njg4MQ.GqVi6d.4pT3uE-YCkHuxibWb8UYDePTfj1qJ38s1dIOLU"
+GUILD_ID = 1326517206674182235  # Remplace par l'ID de ton serveur
+CATEGORY_ID = 1326661110815789130  # Remplace par l'ID de la catégorie où créer les salons
+ADMIN_ROLE_ID = 1326518471923863656  # Remplace par l'ID du rôle admin qui doit voir les salons
 
 # 📌 Fichier pour stocker le compteur de tickets
 TICKET_FILE = "ticket_counter.json"
@@ -43,36 +39,32 @@ async def on_member_join(member):
     admin_role = guild.get_role(ADMIN_ROLE_ID)
 
     if category and admin_role:
-        try:
-            # Générer le nom du ticket avec l'incrémentation
-            ticket_name = f"ticket-{ticket_counter}"
+        # Générer le nom du ticket avec l'incrémentation
+        ticket_name = f"ticket-{ticket_counter}"
 
-            # Création des permissions
-            overwrites = {
-                guild.default_role: discord.PermissionOverwrite(read_messages=False),  # Bloque tout le monde
-                member: discord.PermissionOverwrite(read_messages=True, send_messages=True),  # Autorise le membre
-                admin_role: discord.PermissionOverwrite(read_messages=True, send_messages=True)  # Autorise les admins
-            }
+        # Création des permissions
+        overwrites = {
+            guild.default_role: discord.PermissionOverwrite(read_messages=False),  # Bloque tout le monde
+            member: discord.PermissionOverwrite(read_messages=True, send_messages=True),  # Autorise le membre
+            admin_role: discord.PermissionOverwrite(read_messages=True, send_messages=True)  # Autorise les admins
+        }
 
-            # Création du salon textuel privé
-            channel = await guild.create_text_channel(
-                name=ticket_name,
-                category=category,
-                overwrites=overwrites
-            )
+        # Création du salon textuel privé
+        channel = await guild.create_text_channel(
+            name=ticket_name,
+            category=category,
+            overwrites=overwrites
+        )
 
-            # Envoyer un message de bienvenue et d'instructions
-            await channel.send(
-                f"Bienvenue {member.mention} ! 🎉\n"
-                f"Merci de renseigner les informations nécessaires en référence au salon **#tout-savoir**."
-            )
+        # Envoyer un message de bienvenue et d'instructions
+        await channel.send(
+            f"Bienvenue {member.mention} ! 🎉\n"
+            f"Merci de renseigner les informations nécessaires en référence au salon **#tout-savoir**."
+        )
 
-            # Incrémenter et sauvegarder le compteur
-            ticket_counter += 1
-            with open(TICKET_FILE, "w") as f:
-                json.dump({"counter": ticket_counter}, f)
-
-        except Exception as e:
-            print(f"⚠️ Erreur lors de la création du ticket : {e}")
+        # Incrémenter et sauvegarder le compteur
+        ticket_counter += 1
+        with open(TICKET_FILE, "w") as f:
+            json.dump({"counter": ticket_counter}, f)
 
 bot.run(TOKEN)
